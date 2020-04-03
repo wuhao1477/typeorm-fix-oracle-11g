@@ -56,7 +56,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
         sql += this.createGroupByExpression();
         sql += this.createHavingExpression();
         sql += this.createOrderByExpression();
-        sql += this.createLimitOffsetExpression();
+        sql  = this.createLimitOffsetExpression(""+sql);
         sql += this.createLockExpression();
         sql = sql.trim();
         if (this.expressionMap.subQuery)
@@ -1573,7 +1573,7 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
     /**
      * Creates "LIMIT" and "OFFSET" parts of SQL query.
      */
-    protected createLimitOffsetExpression(): string {
+    protected createLimitOffsetExpression(sql: any): string {
         // in the case if nothing is joined in the query builder we don't need to make two requests to get paginated results
         // we can use regular limit / offset, that's why we add offset and limit construction here based on skip and take values
         let offset: number|undefined = this.expressionMap.offset,
@@ -1621,12 +1621,34 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
         } else if (this.connection.driver instanceof OracleDriver) {
 
-            if (limit && offset)
-                return " OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY";
-            if (limit)
-                return " FETCH NEXT " + limit + " ROWS ONLY";
-            if (offset)
-                return " OFFSET " + offset + " ROWS";
+            if (+this.connection.driver.serverversion.split('.')[0] >= 12) {
+              if (limit && offset)
+                  return sql + " OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY";
+              if (limit)
+                  return sql + " FETCH NEXT " + limit + " ROWS ONLY";
+              if (offset)
+                  return sql + " OFFSET " + offset + " ROWS";
+              console.log("4 limit: "+limit+", offset: "+offset);
+              return sql;
+            } else {
+              let prefix = " SELECT * FROM ( SELECT A.*,ROWNUM AS RNUM FROM ( ";
+              if (limit && offset) {
+              console.log("1 limit: "+limit+", offset: "+offset);
+                return prefix + sql + " ) A WHERE ROWNUM <="+(Number(limit)+Number(offset))+" ) WHERE RNUM > "+offset;
+              }
+              if (limit) {
+              console.log("2 limit: "+limit+", offset: "+offset);
+                offset = 0;
+                return prefix + sql + " ) A WHERE ROWNUM <="+(Number(limit)+Number(offset))+" ) WHERE RNUM > "+offset;
+              }
+              if (offset) {
+              console.log("3 limit: "+limit+", offset: "+offset);
+                limit = 0;
+                return prefix + sql + " ) A WHERE ROWNUM >"+Number(limit)+" ) WHERE RNUM > "+offset;
+              }
+              console.log("4 limit: "+limit+", offset: "+offset);
+              return sql;
+            }
 
         } else {
             if (limit && offset)

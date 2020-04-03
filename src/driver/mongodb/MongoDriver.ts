@@ -52,6 +52,11 @@ export class MongoDriver implements Driver {
     database?: string;
 
     /**
+     * Server version
+     */
+    serverversion: string = '0';
+
+    /**
      * Indicates if replication is enabled.
      */
     isReplicated: boolean = false;

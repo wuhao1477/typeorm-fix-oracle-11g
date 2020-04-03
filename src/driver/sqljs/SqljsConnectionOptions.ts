@@ -16,6 +16,11 @@ export interface SqljsConnectionOptions extends BaseConnectionOptions {
     readonly database?: Uint8Array;
 
     /**
+     * Server version
+     */
+    serverversion: string;
+
+    /**
      * Config that's used to initialize sql.js.
      */
     readonly sqlJsConfig?: any;

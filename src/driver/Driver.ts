@@ -27,6 +27,11 @@ export interface Driver {
     database?: string;
 
     /**
+     * Server version (for Oracle)
+     */
+    serverversion: string;
+
+    /**
      * Indicates if replication is enabled.
      */
     isReplicated: boolean;
