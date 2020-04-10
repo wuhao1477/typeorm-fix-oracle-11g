@@ -50,13 +50,14 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
      * Gets generated sql query without parameters being replaced.
      */
     getQuery(): string {
+        console.log("Oracle version: ", this.connection.driver.serverversion);
         let sql = this.createSelectExpression();
         sql += this.createJoinExpression();
         sql += this.createWhereExpression();
         sql += this.createGroupByExpression();
         sql += this.createHavingExpression();
         sql += this.createOrderByExpression();
-        sql  = this.createLimitOffsetExpression(""+sql);
+        sql  = this.createLimitOffsetExpression("" + sql);
         sql += this.createLockExpression();
         sql = sql.trim();
         if (this.expressionMap.subQuery)
@@ -1621,32 +1622,27 @@ export class SelectQueryBuilder<Entity> extends QueryBuilder<Entity> implements 
 
         } else if (this.connection.driver instanceof OracleDriver) {
 
-            if (+this.connection.driver.serverversion.split('.')[0] >= 12) {
+            if (+this.connection.driver.serverversion.split(".")[0] >= 12) {
               if (limit && offset)
                   return sql + " OFFSET " + offset + " ROWS FETCH NEXT " + limit + " ROWS ONLY";
               if (limit)
                   return sql + " FETCH NEXT " + limit + " ROWS ONLY";
               if (offset)
                   return sql + " OFFSET " + offset + " ROWS";
-              console.log("4 limit: "+limit+", offset: "+offset);
               return sql;
             } else {
               let prefix = " SELECT * FROM ( SELECT A.*,ROWNUM AS RNUM FROM ( ";
               if (limit && offset) {
-              console.log("1 limit: "+limit+", offset: "+offset);
-                return prefix + sql + " ) A WHERE ROWNUM <="+(Number(limit)+Number(offset))+" ) WHERE RNUM > "+offset;
+                return prefix + sql + " ) A WHERE ROWNUM <=" + (Number(limit) + Number(offset)) + " ) WHERE RNUM > " + offset;
               }
               if (limit) {
-              console.log("2 limit: "+limit+", offset: "+offset);
                 offset = 0;
-                return prefix + sql + " ) A WHERE ROWNUM <="+(Number(limit)+Number(offset))+" ) WHERE RNUM > "+offset;
+                return prefix + sql + " ) A WHERE ROWNUM <=" + (Number(limit) + Number(offset)) + " ) WHERE RNUM > " + offset;
               }
               if (offset) {
-              console.log("3 limit: "+limit+", offset: "+offset);
                 limit = 0;
-                return prefix + sql + " ) A WHERE ROWNUM >"+Number(limit)+" ) WHERE RNUM > "+offset;
+                return prefix + sql + " ) A WHERE ROWNUM >" + Number(limit) + " ) WHERE RNUM > " + offset;
               }
-              console.log("4 limit: "+limit+", offset: "+offset);
               return sql;
             }
 

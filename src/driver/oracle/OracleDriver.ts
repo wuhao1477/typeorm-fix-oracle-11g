@@ -66,7 +66,7 @@ export class OracleDriver implements Driver {
     /**
      * Server version
      */
-    serverversion: string = '0';
+    serverversion: string = "0";
 
     /**
      * Indicates if replication is enabled.
