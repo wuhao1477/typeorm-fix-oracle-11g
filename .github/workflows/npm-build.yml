@@ -30,9 +30,7 @@ jobs:
           # 创建临时目录
           mkdir -p temp_npm
           # 复制必要文件到临时目录
-          cp -r build/package temp_npm/
-          cp package.json temp_npm/
-          cp README.md temp_npm/ 2>/dev/null || :
+          cp -r build/package/* temp_npm/
           
       - name: Push to npm branch
         run: |
