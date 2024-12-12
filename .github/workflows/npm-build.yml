@@ -32,17 +32,6 @@ jobs:
           # 复制必要文件到临时目录
           cp -r build/package/* temp_npm/
           
-      - name: Setup NPM Auth
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-          
-      - name: Publish to NPM
-        run: |
-          cd temp_npm
-          npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          
       - name: Push to npm branch
         run: |
           git config --global user.name 'GitHub Actions'
