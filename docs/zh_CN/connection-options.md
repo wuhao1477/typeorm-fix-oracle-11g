@@ -5,6 +5,7 @@
   - [`mysql`/`mariadb`](#mysql/mariadb)
   - [`postgres`/`cockroachdb`连接选项](#postgres/cockroachdb连接选项)
   - [`sqlite`](#sqlite)
+  - [`better-sqlite3`](#better-sqlite3)
   - [`cordova`](#cordova)
   - [`react-native`](#react-native)
   - [`nativescript`](#nativescript)
@@ -20,7 +21,7 @@
 
 ## 常用的连接选项
 
-- `type` - 数据库类型。你必须指定要使用的数据库引擎。该值可以是"mysql"，"postgres"，"mariadb"，"sqlite"，"cordova"，"nativescript"，"oracle"，"mssql"，"mongodb"，"sqljs"，"react-native"。此选项是**必需**的。
+- `type` - 数据库类型。你必须指定要使用的数据库引擎。该值可以是"mysql"，"postgres"，"mariadb"，"sqlite", "better-sqlite3"，"cordova"，"nativescript"，"oracle"，"mssql"，"mongodb"，"sqljs"，"react-native"。此选项是**必需**的。
 
 - `name` - 连接名。 在使用 `getConnection(name: string)`
   或 `ConnectionManager.get(name: string)`时候需要用到。不同连接的连接名称不能相同，它们都必须是唯一的。如果没有给出连接名称，那么它将被设置为"default"。
@@ -128,6 +129,14 @@
 
 - `database` - 数据库路径。 例如 "./mydb.sql"
 
+## `better-sqlite3`
+
+* `database` - 数据库路径。 例如 "./mydb.sql"
+
+* `statementCacheSize` - Sqlite 查询 Statement 缓存大小。默认100
+
+* `prepareDatabase` - 在数据库投入使用前运行的函数。你可以在这里访问到better-sqlite3原始数据库对象。
+
 ## `cordova`
 
 - `database` - 数据库名
@@ -183,8 +192,6 @@
 
 - `pool.priorityRange` - 1和x之间的int值  - 如果设置了且没有可用资源，则borrowers可以在队列中指定其相对优先级(默认 `1`)。
 
-- `pool.autostart` - 布尔值，一旦调用构造函数，池应该开始创建资源等（默认为`true`）。
-
 - `pool.victionRunIntervalMillis` - 多久检查一次eviction checks。 默认值：`0`（不运行）。
 
 - `pool.numTestsPerRun` - 每次eviction checks资源数量。 默认值：`3`。
@@ -201,7 +208,7 @@
 
 - `options.packetSize` - TDS数据包的大小（需要与服务器协商）。 应该是2的幂。（默认值：`4096`）。
 
-- `options.useUTC` - 布尔值，用于确定是以UTC还是本地时间。(默认：`true`)。
+- `options.useUTC` - 布尔值，用于确定是以UTC还是本地时间。(默认：`false`)。
 
 - `options.abortTransactionOnError` - 如果在给定事务执行期间遇到任何错误，则确定是否自动回滚事务的布尔值。 这将在连接的初始SQL阶段设置`SET XACT_ABORT`的值（[文档](http://msdn.microsoft.com/en-us/library/ms188792.aspx))。
 
@@ -233,7 +240,7 @@
 
 - `options.readOnlyIntent` - 布尔值，确定连接是否将从SQL Server可用性组请求只读访问权限。 有关更多信息，请参阅此处。 （默认：`false`）。
 
-- `options.encrypt` - 确定连接是否将被加密的布尔值。 如果您使用的是Windows Azure，请设置为true。 （默认：`false`）。
+- `options.encrypt` - 确定连接是否将被加密的布尔值。 如果您使用的是Windows Azure，请设置为true。 （默认：`true`）。
 
 - `options.cryptoCredentialsDetails` - 使用加密时，可以提供一个对象，该对象在调用[tls.createSecurePair](http://nodejs.org/docs/latest/api/tls.html#tls_tls_createsecurepair_credentials_isserver_requestcert_rejectunauthorized)时将用于第一个参数（默认值：`{}`）。
 
@@ -368,6 +375,8 @@
 
 - `authMechanism` - 设置MongoDB用于验证连接的身份验证机制。 
 
+- `directConnection` - 指定是否强制将所有操作分派到指定的主机。 
+
 > 注： 由于译者对MongoDB理解不够深入，故一些翻译直接使用了机翻，因此会有些词不达意，如有更好的翻译选项，请提交PR进行完善。
 
 ## `sql.js`
@@ -413,11 +422,6 @@
     ],
     migrations: [
         "migration/*.js"
-    ],
-    cli: {
-        entitiesDir: "entity",
-        migrationsDir: "migration",
-        subscribersDir: "subscriber"
-    }
+    ]
 }
 ```

@@ -14,9 +14,8 @@ As a contributor, here are the guidelines we would like you to follow:
 There are several ways how you can ask your question:
 
 * You can create a question on [StackOverflow](https://stackoverflow.com/questions/tagged/typeorm) where the questions should be tagged with tag `typeorm`.
-* You can ask on [Slack](https://join.slack.com/t/typeorm/shared_invite/enQtNDQ1MzA3MDA5MTExLTUxNTZhM2Q4NDNhMjMzNjQ2NGM1ZjI1ZGRkNjJjYzI4OTZjMGYyYTc0MzAxYTdjMWE3ZDIxOWUzZTdlM2QxNTY)
+* You can ask on [Discord](https://discord.gg/cC9hkmUgNa)
 * You can create issue on [github](https://github.com/typeorm/typeorm/issues)
-* If you have a Skype then try to find me there (`Umed Khudoiberdiev`)
 
 Preferred way if you create your question on StackOverflow, or create a github issue.
 
@@ -196,9 +195,9 @@ This new feature change bahviour of typeorm to allow use new magic decorator...
 
 Closes: #22222
 ```
-Doc update:
+Docs update:
 ```
-doc: update supported mssql column types
+docs: update supported mssql column types
 ```
 Breaking change:
 ```
@@ -219,7 +218,7 @@ Anyone can file an expense. If the expense makes sense for the development of th
 ### Contributors
 
 Thank you to all the people who have already contributed to typeorm!
-<a href="graphs/contributors"><img src="https://opencollective.com/typeorm/contributors.svg?width=890" /></a>
+<a href="../../graphs/contributors"><img src="https://opencollective.com/typeorm/contributors.svg?width=890" /></a>
 
 
 ### Backers

@@ -5,6 +5,8 @@
  * For node.js environment this class is not getting packaged.
  * Don't use methods of this class in the code, use PlatformTools methods instead.
  */
+import { Buffer } from "buffer";
+
 export class PlatformTools {
 
     /**
@@ -75,6 +77,11 @@ export class PlatformTools {
         return false;
     }
 
+    static dotenv(pathStr: string): void {
+        if (this.type === "browser")
+            throw new Error(`This option/function is not supported in the browser environment. Failed operation: dotenv.config({ path: "${pathStr}" }).`);
+    }
+
     /**
      * Gets environment variable.
      */
@@ -89,7 +96,7 @@ export class PlatformTools {
             throw new Error(`This option/function is not supported in the browser environment. Failed operation: fs.readFileSync("${filename}").`);
         return null;
     }
-    
+
     static appendFileSync(filename: string, data: any) {
         if (this.type === "browser")
             throw new Error(`This option/function is not supported in the browser environment. Failed operation: fs.appendFileSync("${filename}").`);
@@ -125,11 +132,11 @@ export class PlatformTools {
     static logError(prefix: string, error: any) {
         console.error(prefix + " ", error);
     }
-    
+
     static logWarn(prefix: string, warning: any) {
         console.warn(prefix + " ", warning);
     }
-    
+
     static log(message: string) {
         console.log(message);
     }
@@ -160,9 +167,9 @@ interface Window {
 
 declare var window: Window;
 if (typeof window !== "undefined") {
-    window.Buffer = require("buffer/").Buffer;
+    window.Buffer = Buffer;
 }
 // NativeScript uses global, not window
-if (typeof global !== "undefined") {
+if (typeof global !== "undefined" && typeof require !== "undefined") {
     global.Buffer = require("buffer/").Buffer;
 }

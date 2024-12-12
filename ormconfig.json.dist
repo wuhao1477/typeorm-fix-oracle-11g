@@ -25,7 +25,23 @@
     "skip": false,
     "name": "sqlite",
     "type": "sqlite",
-    "database": "temp/sqlitedb.db",
+    "database": "./temp/sqlitedb-1.db",
+    "logging": false,
+    "relationLoadStrategy": "join"
+  },
+  {
+    "skip": false,
+    "name": "sqlite-2",
+    "type": "sqlite",
+    "database": "./temp/sqlitedb-2.db",
+    "logging": false,
+    "relationLoadStrategy": "query"
+  },
+  {
+    "skip": false,
+    "name": "better-sqlite3",
+    "type": "better-sqlite3",
+    "database": "temp/better-sqlite3db.db",
     "logging": false
   },
   {
@@ -47,17 +63,20 @@
     "username": "sa",
     "password": "Admin12345",
     "database": "tempdb",
-    "logging": false
+    "logging": false,
+    "extra": {
+      "trustServerCertificate": true
+    }
   },
   {
-    "skip": true,
+    "skip": false,
     "name": "oracle",
     "type": "oracle",
     "host": "localhost",
-    "username": "system",
+    "username": "typeorm",
     "password": "oracle",
     "port": 1521,
-    "sid": "xe.oracle.docker",
+    "serviceName": "XEPDB1",
     "logging": false
   },
   {
@@ -90,5 +109,31 @@
     "logging": false,
     "useNewUrlParser": true,
     "useUnifiedTopology": true
+  },
+  {
+    "skip": true,
+    "name": "aurora-mysql",
+    "type": "aurora-mysql",
+    "region": "us-east-1",
+    "secretArn": "mysecret",
+    "resourceArn": "app-dbcluster",
+    "database": "app-dbcluster-mine",
+    "serviceConfigOptions": {
+      "maxRetries": 3
+    },
+    "logging": false
+  },
+  {
+    "skip": true,
+    "name": "aurora-postgres",
+    "type": "aurora-postgres",
+    "region": "us-east-1",
+    "secretArn": "mysecret",
+    "resourceArn": "app-dbcluster",
+    "database": "app-dbcluster-mine",
+    "serviceConfigOptions": {
+      "maxRetries": 3
+    },
+    "logging": false
   }
 ]
