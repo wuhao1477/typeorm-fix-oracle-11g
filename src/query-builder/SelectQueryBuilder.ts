@@ -81,7 +81,6 @@ export class SelectQueryBuilder<Entity extends ObjectLiteral>
      * Gets generated SQL query without parameters being replaced.
      */
     getQuery(): string {
-        console.log("Oracle version: ", this.connection.driver.serverversion);
         let sql = this.createComment()
         sql += this.createCteExpression()
         sql += this.createSelectExpression()
