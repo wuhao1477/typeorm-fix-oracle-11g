@@ -25,6 +25,9 @@ jobs:
       - name: Build
         run: npm run package
         
+      - name: Clean node_modules
+        run: rm -rf node_modules
+        
       - name: Prepare npm branch files
         run: |
           # 创建临时目录
